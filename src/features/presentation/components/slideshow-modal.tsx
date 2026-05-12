@@ -33,8 +33,6 @@ export function SlideshowModal({
   const [isPlaying, setIsPlaying] = useState(false)
   const [showControls, setShowControls] = useState(true)
 
-  const currentSlide = slides[currentIndex]
-
   const toggleAutoplay = useCallback(() => {
     if (!swiperRef.current) return
     if (isPlaying) {
