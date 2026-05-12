@@ -49,7 +49,7 @@ import {
   Save,
   Trash2,
 } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { SlideshowModal } from '#/features/presentation/components/slideshow-modal'
 import { exportToPptx } from '#/features/presentation/lib/export-pptx'
@@ -102,6 +102,21 @@ function PresentationDetailPage() {
   const { isFullscreen, toggleFullscreen } = useFullscreen(
     'slide-preview-container',
   )
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (!isFullscreen) return
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        setActiveSlideIndex((i) => Math.max(0, i - 1))
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        setActiveSlideIndex((i) => Math.min(slides.length - 1, i + 1))
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isFullscreen, slides.length])
 
   const handleExportPptx = useCallback(async () => {
     const data = query.data
@@ -481,6 +496,34 @@ function PresentationDetailPage() {
                   >
                     <Maximize className="size-4" />
                   </button>
+
+                  {/* Fullscreen nav arrows */}
+                  {isFullscreen && (
+                    <>
+                      <button
+                        type="button"
+                        disabled={activeSlideIndex === 0}
+                        onClick={() =>
+                          setActiveSlideIndex((i) => Math.max(0, i - 1))
+                        }
+                        className="absolute left-4 top-1/2 -translate-y-1/2 z-50 rounded-full size-10 flex items-center justify-center bg-black/50 text-white hover:bg-black/70 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <ChevronLeft className="size-5" />
+                      </button>
+                      <button
+                        type="button"
+                        disabled={activeSlideIndex >= slides.length - 1}
+                        onClick={() =>
+                          setActiveSlideIndex((i) =>
+                            Math.min(slides.length - 1, i + 1),
+                          )
+                        }
+                        className="absolute right-4 top-1/2 -translate-y-1/2 z-50 rounded-full size-10 flex items-center justify-center bg-black/50 text-white hover:bg-black/70 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        <ChevronRight className="size-5" />
+                      </button>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center justify-between">
                   <Button
