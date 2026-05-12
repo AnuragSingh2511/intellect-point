@@ -1,6 +1,7 @@
-import type { Presentation } from '#/features/presentation/api/presentation-queries'
+import { Link } from '@tanstack/react-router'
+import type { Presentation } from '../api/presentation-queries'
 
-interface PresentationListSectionProps {
+type PresentationListSectionProps = {
   presentations: Presentation[]
   isPending: boolean
 }
@@ -9,39 +10,33 @@ export function PresentationListSection({
   presentations,
   isPending,
 }: PresentationListSectionProps) {
-  if (isPending) {
-    return (
-      <div className="mb-8 animate-pulse">
-        <div className="h-8 w-48 bg-muted rounded-lg mb-4" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-32 bg-muted rounded-2xl" />
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  if (presentations.length === 0) {
-    return null
-  }
-
   return (
-    <div className="mb-8">
-      <h2 className="text-xl font-semibold mb-4">Your Presentations</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {presentations.map((p) => (
-          <div
-            key={p.id}
-            className="glass rounded-2xl p-4 hover:border-primary/30 transition-colors cursor-pointer"
-          >
-            <p className="font-medium truncate">{p.title}</p>
-            <p className="text-xs text-muted-foreground mt-1 capitalize">
-              {p.status} · {p.slideCount} slides
-            </p>
-          </div>
-        ))}
-      </div>
-    </div>
+    <section className="mb-12">
+      <h2 className="text-lg font-semibold mb-4">Your presentations</h2>
+      {isPending ? (
+        <p className="text-sm text-muted-foreground">Loading…</p>
+      ) : presentations.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          No presentations yet. Create one with the form below.
+        </p>
+      ) : (
+        <ul className="grid gap-4 sm:grid-cols-2">
+          {presentations.map((p) => (
+            <li key={p.id}>
+              <Link
+                to="/presentations/$presentationId"
+                params={{ presentationId: p.id }}
+                className="block glass rounded-2xl p-4 hover:border-primary/30 transition-colors"
+              >
+                <p className="font-medium truncate">{p.title}</p>
+                <p className="text-xs text-muted-foreground mt-1 capitalize">
+                  {p.status.toLowerCase()} · {p.slideCount} slides
+                </p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   )
 }
