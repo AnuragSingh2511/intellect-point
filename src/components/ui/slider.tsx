@@ -38,11 +38,11 @@ function Slider({
     >
       <SliderPrimitive.Track
         data-slot="slider-track"
-        className="relative grow overflow-hidden rounded-4xl bg-muted data-horizontal:h-3 data-horizontal:w-full data-vertical:h-full data-vertical:w-3"
+        className="relative overflow-hidden rounded-4xl bg-blue-400 h-4 w-full border border-blue-300/50"
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
-          className="absolute bg-primary select-none data-horizontal:h-full data-vertical:w-full"
+          className="absolute bg-primary h-full select-none"
         />
       </SliderPrimitive.Track>
       {Array.from({ length: _values.length }, (_, index) => (
