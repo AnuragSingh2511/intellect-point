@@ -3,13 +3,17 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
+// import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+// import { TanStackDevtools } from '@tanstack/react-devtools'
+// import Footer from '../components/Footer'
+// import Header from '../components/Header'
 
-import Header from '../components/Header'
-import Footer from '../components/Footer'
+// import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { Toaster } from '#/components/ui/sonner'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -41,14 +45,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        <script />
         <HeadContent />
       </head>
-      <body>
-        <Header />
+      <body className="font-sans antialiased">
         {children}
-        <Footer />
+        <Toaster />
         <Scripts />
       </body>
     </html>
