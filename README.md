@@ -28,41 +28,17 @@
 - Public-ish routes — `/login` and auth/Inngest API paths are public (see `src/lib/auth-paths.ts`). Other routes enforce auth in `beforeLoad`.
 - Server functions — Create/update/regenerate/delete presentations and load data via TanStack Start `createServerFn` (under `src/features/presentation/`).
 
-## Prerequisites
+## Getting Started
 
-- Bun (recommended; npm also works)
-- SQLite database
-- Google AI (Gemini) API key for generation
-- Inngest for background runs (local dev uses the Inngest dev server; production uses your deployed `/api/inngest` endpoint)
-- OAuth apps (optional but expected for login): Google and/or GitHub developer console apps with correct redirect URLs
+### Prerequisites
 
-## Environment variables
+- [Bun](https://bun.sh/) (recommended) or Node.js 20+
 
-Create a `.env` in the project root (Prisma also loads these via `prisma.config.ts`).
+### Installation
 
-| Variable                       | Description / How to get                            |
-| ------------------------------ | --------------------------------------------------- |
-| `DATABASE_URL`                 | SQLite path, e.g. `file:./dev.db`                   |
-| `BETTER_AUTH_SECRET`           | Run `npx @better-auth/cli secret` to generate       |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | Google AI Studio API key for Gemini generation      |
-| `GOOGLE_CLIENT_ID`             | Google OAuth client ID                              |
-| `GOOGLE_CLIENT_SECRET`         | Google OAuth client secret                          |
-| `GITHUB_CLIENT_ID`             | GitHub OAuth client ID                              |
-| `GITHUB_CLIENT_SECRET`         | GitHub OAuth client secret                          |
-| `VITE_APP_TITLE`               | App title shown in the UI                           |
-| `SERVER_URL`                   | Base URL of your app (e.g. `http://localhost:3000`) |
-
-Better Auth / OAuth: Configure your provider dashboards so redirect URLs match your environment (e.g. `http://localhost:3000/api/auth/callback/google` for local dev). See [Better Auth docs](https://www.better-auth.com/docs).
-
-Google AI: Key creation and quotas are documented in [Google AI Studio](https://aistudio.google.com/).
-
-## Setup
-
-1. **Install dependencies**
-
-   ```bash
-   bun install
-   ```
+```bash
+bun install
+```
 
 2. **Configure environment**
    Add the variables from the table above to `.env`.
