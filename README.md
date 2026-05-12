@@ -1,6 +1,6 @@
 <div align="center">
 
-# PPT AI
+# Intellect-Point
 
 **AI-powered presentation generator** — create beautiful, structured slide decks from a simple text prompt.
 
@@ -18,7 +18,7 @@
 - **Slideshow Playback** — Dedicated slideshow modal for presenting
 - **Export** — Download presentations as **PPT** (PowerPoint) or **PDF**
 - **Interactive Sidebar** — Clickable slide thumbnails with blue-gradient loading states
-- **Editable Settings** — Customize title, prompt, slide count, style, tone, and layout
+- **Editable Settings** — Customise title, prompt, slide count, style, tone, and layout
 - **Regenerate** — Re-run AI generation with updated settings
 - **Responsive Design** — Works on desktop and mobile
 
