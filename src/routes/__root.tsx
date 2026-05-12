@@ -32,13 +32,31 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Intellect-Point',
+      },
+      {
+        name: 'description',
+        content:
+          'AI-powered presentation generator — create beautiful slide decks from a simple text prompt.',
+      },
+      {
+        name: 'theme-color',
+        content: '#1a1a2e',
       },
     ],
     links: [
       {
         rel: 'stylesheet',
         href: appCss,
+      },
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        href: '/favicon.svg',
+      },
+      {
+        rel: 'manifest',
+        href: '/manifest.json',
       },
     ],
   }),
