@@ -1,5 +1,7 @@
 # Intellect-Point
 
+AI-powered presentation generator that turns a simple text prompt into a structured, professionally styled slide deck. Built with TanStack Start, Prisma, and Inngest for seamless AI-driven content creation, live previews, fullscreen playback, and one-click export to PowerPoint or PDF.
+
 ## Tech stack
 
 - [TanStack Start](https://tanstack.com/start)
