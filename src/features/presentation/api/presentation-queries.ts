@@ -1,6 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 
 import { prisma } from '#/lib/db'
+import { requirePresentationUserId } from '../lib/server-helpers'
 import type {
   SlideLayout,
   SlideStyle,
@@ -34,7 +35,9 @@ export type Presentation = {
 
 export const listPresentations = createServerFn({ method: 'GET' }).handler(
   async (): Promise<Presentation[]> => {
+    const userId = await requirePresentationUserId()
     const rows = await prisma.presentation.findMany({
+      where: { userId },
       orderBy: { createdAt: 'desc' },
     })
     return rows as unknown as Presentation[]
@@ -54,8 +57,9 @@ export const getPresentation = createServerFn({ method: 'GET' })
     throw new Error('Missing id')
   })
   .handler(async ({ data }): Promise<Presentation> => {
-    const row = await prisma.presentation.findUnique({
-      where: { id: data.id },
+    const userId = await requirePresentationUserId()
+    const row = await prisma.presentation.findFirst({
+      where: { id: data.id, userId },
       include: { slides: { orderBy: { order: 'asc' } } },
     })
     if (!row) throw new Error('Presentation not found')

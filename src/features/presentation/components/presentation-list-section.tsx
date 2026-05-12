@@ -1,5 +1,5 @@
-import { Link } from '@tanstack/react-router'
 import type { Presentation } from '../api/presentation-queries'
+import { PresentationCard } from './presentation-card'
 
 type PresentationListSectionProps = {
   presentations: Presentation[]
@@ -14,25 +14,23 @@ export function PresentationListSection({
     <section className="mb-12">
       <h2 className="text-lg font-semibold mb-4">Your presentations</h2>
       {isPending ? (
-        <p className="text-sm text-muted-foreground">Loading…</p>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="h-24 rounded-xl bg-card/50 animate-pulse border border-border/30"
+            />
+          ))}
+        </div>
       ) : presentations.length === 0 ? (
         <p className="text-sm text-muted-foreground">
           No presentations yet. Create one with the form below.
         </p>
       ) : (
-        <ul className="grid gap-4 sm:grid-cols-2">
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {presentations.map((p) => (
-            <li key={p.id}>
-              <Link
-                to="/presentations/$presentationId"
-                params={{ presentationId: p.id }}
-                className="block glass rounded-2xl p-4 hover:border-primary/30 transition-colors"
-              >
-                <p className="font-medium truncate">{p.title}</p>
-                <p className="text-xs text-muted-foreground mt-1 capitalize">
-                  {p.status.toLowerCase()} · {p.slideCount} slides
-                </p>
-              </Link>
+            <li key={p.id} className="relative">
+              <PresentationCard presentation={p} />
             </li>
           ))}
         </ul>

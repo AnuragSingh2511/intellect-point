@@ -5,14 +5,21 @@ export function useFullscreen(targetElementId: string) {
 
   const toggleFullscreen = useCallback(async () => {
     const elem = document.getElementById(targetElementId)
-    if (!elem) return
+    if (!elem) {
+      console.warn('Fullscreen target not found:', targetElementId)
+      return
+    }
 
-    if (!document.fullscreenElement) {
-      await elem.requestFullscreen()
-      setIsFullscreen(true)
-    } else {
-      await document.exitFullscreen()
-      setIsFullscreen(false)
+    try {
+      if (document.fullscreenElement === elem) {
+        await document.exitFullscreen()
+      } else if (document.fullscreenElement) {
+        await document.exitFullscreen()
+      } else {
+        await elem.requestFullscreen()
+      }
+    } catch (err) {
+      console.error('Fullscreen toggle failed:', err)
     }
   }, [targetElementId])
 

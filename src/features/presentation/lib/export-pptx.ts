@@ -25,6 +25,9 @@ export async function exportToPptx({ title, slides }: ExportOptions) {
   for (const slideData of slides) {
     const slide = pptx.addSlide()
 
+    // Set dark background
+    slide.background = { color: '1a1a2e' }
+
     if (slideData.imageUrl) {
       try {
         slide.addImage({
@@ -36,7 +39,7 @@ export async function exportToPptx({ title, slides }: ExportOptions) {
           sizing: { type: 'cover', w: '100%', h: '100%' },
         })
 
-        slide.addShape(pptxgen.ShapeType.rect, {
+        slide.addShape('rect', {
           x: 0,
           y: 0,
           w: '100%',
@@ -44,28 +47,8 @@ export async function exportToPptx({ title, slides }: ExportOptions) {
           fill: { color: '000000', transparency: 50 },
         })
       } catch {
-        slide.addShape(pptxgen.ShapeType.rect, {
-          x: 0,
-          y: 0,
-          w: '100%',
-          h: '100%',
-          fill: {
-            type: 'solid',
-            color: '1a1a2e',
-          },
-        })
+        // Image failed, keep dark background
       }
-    } else {
-      slide.addShape(pptxgen.ShapeType.rect, {
-        x: 0,
-        y: 0,
-        w: '100%',
-        h: '100%',
-        fill: {
-          type: 'solid',
-          color: '1a1a2e',
-        },
-      })
     }
 
     slide.addText(slideData.title, {

@@ -29,10 +29,14 @@ export const createPresentation = createServerFn({
       },
     })
 
-    await inngest.send({
-      name: 'presentation/generate',
-      data: { presentationId: presentation.id },
-    })
+    try {
+      await inngest.send({
+        name: 'presentation/generate',
+        data: { presentationId: presentation.id },
+      })
+    } catch (e) {
+      console.error('Inngest send failed:', e)
+    }
 
     return presentation
   })
@@ -84,10 +88,14 @@ export const regeneratePresentation = createServerFn({
       data: { status: 'GENERATING' },
     })
 
-    await inngest.send({
-      name: 'presentation/generate',
-      data: { presentationId: data.id },
-    })
+    try {
+      await inngest.send({
+        name: 'presentation/generate',
+        data: { presentationId: data.id },
+      })
+    } catch (e) {
+      console.error('Inngest send failed:', e)
+    }
 
     return { ok: true as const }
   })

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ImageIcon, Loader2 } from 'lucide-react'
+import { ImageIcon } from 'lucide-react'
 
 type SlideCardProps = {
   slide: {
@@ -43,26 +43,24 @@ export function SlideCard({ slide, isActive, onClick }: SlideCardProps) {
           <h3 className="text-sm font-medium line-clamp-1 mb-2">
             {slide.title}
           </h3>
-          <div className="aspect-video rounded-lg overflow-hidden bg-muted relative">
+          <div className="aspect-video rounded-lg overflow-hidden relative bg-gradient-to-br from-blue-500/20 via-indigo-500/20 to-purple-500/20">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-500/10" />
             {slide.imageUrl ? (
               <>
-                {imageStatus === 'loading' && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-muted">
-                    <Loader2 className="size-5 text-muted-foreground animate-spin" />
-                  </div>
-                )}
-                {imageStatus === 'error' && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted/50 gap-1">
-                    <ImageIcon className="size-5 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">
-                      Loading…
-                    </span>
+                {imageStatus !== 'loaded' && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                    <div className="size-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                      <ImageIcon className="size-5 text-white" />
+                    </div>
+                    {imageStatus === 'loading' && (
+                      <span className="text-xs text-blue-200/70">Loading…</span>
+                    )}
                   </div>
                 )}
                 <img
                   src={slide.imageUrl}
                   alt={slide.title}
-                  className={`w-full h-full object-cover transition-opacity ${
+                  className={`w-full h-full object-cover transition-opacity duration-500 ${
                     imageStatus === 'loaded' ? 'opacity-100' : 'opacity-0'
                   }`}
                   loading="lazy"
@@ -71,8 +69,11 @@ export function SlideCard({ slide, isActive, onClick }: SlideCardProps) {
                 />
               </>
             ) : (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-xs text-muted-foreground">No image</span>
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                <div className="size-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                  <ImageIcon className="size-5 text-white" />
+                </div>
+                <span className="text-xs text-blue-200/70">No image</span>
               </div>
             )}
           </div>

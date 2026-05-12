@@ -53,6 +53,13 @@ import { useCallback, useState } from 'react'
 import { toast } from 'sonner'
 import { SlideshowModal } from '#/features/presentation/components/slideshow-modal'
 import { exportToPptx } from '#/features/presentation/lib/export-pptx'
+import { exportToPdf } from '#/features/presentation/lib/export-pdf'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '#/components/ui/dropdown-menu'
 
 export const Route = createFileRoute('/presentations/$presentationId')({
   beforeLoad: async ({ location }) => {
@@ -105,6 +112,26 @@ function PresentationDetailPage() {
     setIsExporting(true)
     try {
       const filename = await exportToPptx({
+        title: data.title,
+        slides: slidesToExport,
+      })
+      toast.success(`Exported as ${filename}`)
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : 'Export failed')
+    } finally {
+      setIsExporting(false)
+    }
+  }, [query.data, slides])
+
+  const handleExportPdf = useCallback(async () => {
+    const data = query.data
+    if (!data) return
+    const slidesToExport = slides
+    if (slidesToExport.length === 0) return
+
+    setIsExporting(true)
+    try {
+      const filename = await exportToPdf({
         title: data.title,
         slides: slidesToExport,
       })
@@ -197,18 +224,40 @@ function PresentationDetailPage() {
                       <Play className="size-4" />
                       <span className="hidden sm:inline">Slideshow</span>
                     </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="rounded-xl gap-1"
-                      onClick={handleExportPptx}
-                      disabled={isExporting}
-                    >
-                      <Download className="size-4" />
-                      <span className="hidden sm:inline">
-                        {isExporting ? 'Exporting…' : 'Export'}
-                      </span>
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="rounded-xl gap-1"
+                          disabled={isExporting}
+                        >
+                          <Download className="size-4" />
+                          <span className="hidden sm:inline">
+                            {isExporting ? 'Exporting…' : 'Export'}
+                          </span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent
+                        align="end"
+                        className="glass min-w-40"
+                      >
+                        <DropdownMenuItem
+                          onClick={handleExportPptx}
+                          className="cursor-pointer gap-2"
+                        >
+                          <Download className="size-4" />
+                          PPT
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={handleExportPdf}
+                          className="cursor-pointer gap-2"
+                        >
+                          <Download className="size-4" />
+                          PDF
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </>
                 )}
                 <Button
@@ -423,16 +472,15 @@ function PresentationDetailPage() {
                     slide={activeSlide}
                     isFullscreen={isFullscreen}
                   />
-                  <Button
-                    variant="secondary"
-                    size="icon"
-                    className={`absolute top-3 right-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity ${
+                  <button
+                    type="button"
+                    onClick={toggleFullscreen}
+                    className={`absolute top-3 right-3 z-50 rounded-lg p-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 opacity-0 group-hover:opacity-100 transition-opacity ${
                       isFullscreen ? 'opacity-100' : ''
                     }`}
-                    onClick={toggleFullscreen}
                   >
                     <Maximize className="size-4" />
-                  </Button>
+                  </button>
                 </div>
                 <div className="flex items-center justify-between">
                   <Button
