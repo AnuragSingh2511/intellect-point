@@ -4,11 +4,6 @@ import { prisma } from '#/lib/db'
 import { inngest } from '#/integrations/inngest/client'
 
 import { deriveTitle, requirePresentationUserId } from '../lib/server-helpers'
-import {
-  createPresentationInputSchema,
-  presentationIdInputSchema,
-  updatePresentationInputSchema,
-} from '../types/schemas'
 import type {
   CreatePresentationInput,
   PresentationIdInput,

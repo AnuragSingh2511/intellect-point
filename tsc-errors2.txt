@@ -1,0 +1,17 @@
+﻿src/components/navbar.tsx(2,1): error TS6133: 'cn' is declared but its value is never read.
+src/components/navbar.tsx(93,25): error TS2322: Type 'string | null | undefined' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+src/components/ui/calendar.tsx(94,9): error TS2353: Object literal may only specify known properties, and 'table' does not exist in type 'Partial<ClassNames>'.
+src/features/presentation/actions/presentation-mutations.ts(7,1): error TS6192: All imports in import declaration are unused.
+src/integrations/inngest/functions.ts(1,38): error TS2307: Cannot find module 'ai' or its corresponding type declarations.
+src/integrations/inngest/functions.ts(2,24): error TS2307: Cannot find module '@ai-sdk/google' or its corresponding type declarations.
+src/integrations/inngest/functions.ts(5,24): error TS2307: Cannot find module '#/db' or its corresponding type declarations.
+src/integrations/inngest/functions.ts(100,32): error TS7006: Parameter 's' implicitly has an 'any' type.
+src/integrations/inngest/functions.ts(100,35): error TS7006: Parameter 'i' implicitly has an 'any' type.
+src/router.tsx(4,1): error TS6133: 'ReactNode' is declared but its value is never read.
+src/router.tsx(5,1): error TS6133: 'QueryClient' is declared but its value is never read.
+src/router.tsx(7,8): error TS6133: 'TanstackQueryProvider' is declared but its value is never read.
+src/routes/index.tsx(54,9): error TS6133: '_context' is declared but its value is never read.
+src/routes/index.tsx(73,9): error TS2322: Type '{ prompt: string; slideCount: number; style: "bold" | "minimal" | "professional" | "creative"; tone: "formal" | "casual" | "persuasive" | "informative"; layout: "text-heavy" | "visual" | "balanced" | "bullet-points"; }' is not assignable to type 'undefined'.
+src/routes/index.tsx(85,9): error TS2322: Type '"/presentations/$presentationId"' is not assignable to type '"/" | "/login" | "." | ".." | "/about" | "/api/inngest" | "/api/auth/$"'.
+src/routes/index.tsx(86,19): error TS2353: Object literal may only specify known properties, and 'presentationId' does not exist in type 'ParamsReducerFn<RouterCore<Route<Register, any, "/", "/", string, "__root__", undefined, {}, MyRouterContext, AnyContext, AnyContext, {}, undefined, ... 4 more ..., undefined>, "never", false, RouterHistory, Record<...>>, "PATH", string, "/presentations/$presentationId">'.

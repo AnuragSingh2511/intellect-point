@@ -19,6 +19,7 @@
     ]
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.72",
     "@base-ui/react": "^1.4.1",
     "@fontsource-variable/geist-mono": "^5.2.7",
     "@fontsource-variable/ibm-plex-sans": "^5.2.8",
@@ -39,6 +40,7 @@
     "@tanstack/react-router-ssr-query": "latest",
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "^1.132.0",
+    "ai": "^6.0.178",
     "better-auth": "^1.6.10",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

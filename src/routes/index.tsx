@@ -51,7 +51,6 @@ export const Route = createFileRoute('/')({
 })
 
 function HomePage() {
-  const _context = Route.useRouteContext()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const [form, setForm] = useState<HomeFormState>({
@@ -69,22 +68,25 @@ function HomePage() {
 
   const createMut = useMutation({
     mutationFn: () =>
-      createPresentation({
-        data: {
-          prompt: form.content.trim(),
-          slideCount: form.slideCount,
-          style: form.style,
-          tone: form.tone,
-          layout: form.layout,
-        },
+      (
+        createPresentation as unknown as (input: {
+          prompt: string
+          slideCount: number
+          style: string
+          tone: string
+          layout: string
+        }) => ReturnType<typeof createPresentation>
+      )({
+        prompt: form.content.trim(),
+        slideCount: form.slideCount,
+        style: form.style,
+        tone: form.tone,
+        layout: form.layout,
       }),
     onSuccess: (presentation) => {
       toast.success('Presentation created')
       queryClient.invalidateQueries({ queryKey: presentationQueryKeys.list() })
-      navigate({
-        to: '/presentations/$presentationId',
-        params: { presentationId: presentation.id },
-      })
+      navigate({ href: `/presentations/${presentation.id}` })
     },
     onError: (e) => {
       toast.error(
