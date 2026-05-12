@@ -11,6 +11,11 @@ export const createPresentationInputSchema = z.object({
 export const updatePresentationInputSchema = z.object({
   id: z.string().cuid(),
   title: z.string().optional(),
+  prompt: z.string().optional(),
+  slideCount: z.number().int().min(3).max(20).optional(),
+  style: z.string().optional(),
+  tone: z.string().optional(),
+  layout: z.string().optional(),
   status: z.enum(['DRAFT', 'GENERATING', 'COMPLETED', 'FAILED']).optional(),
 })
 

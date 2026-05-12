@@ -1,12 +1,12 @@
 import { getSession } from '#/lib/auth.functions'
 import {
   LAYOUT_OPTIONS,
-  PRESENTATION_TEMPLATES,
-  PresentationListSection,
   SLIDE_STYLES,
   TONE_OPTIONS,
-  presentationQueryKeys,
-} from '#/features/presentation'
+} from '#/features/presentation/constants/presentation-options'
+import { PRESENTATION_TEMPLATES } from '#/features/presentation/constants/presentation-templates'
+import { PresentationListSection } from '#/features/presentation/components/presentation-list-section'
+import { presentationQueryKeys } from '#/features/presentation/query-keys'
 import { createPresentation } from '#/features/presentation/actions/presentation-mutations'
 import { listPresentations } from '#/features/presentation/api/presentation-queries'
 import { Button } from '#/components/ui/button'
@@ -68,20 +68,14 @@ function HomePage() {
 
   const createMut = useMutation({
     mutationFn: () =>
-      (
-        createPresentation as unknown as (input: {
-          prompt: string
-          slideCount: number
-          style: string
-          tone: string
-          layout: string
-        }) => ReturnType<typeof createPresentation>
-      )({
-        prompt: form.content.trim(),
-        slideCount: form.slideCount,
-        style: form.style,
-        tone: form.tone,
-        layout: form.layout,
+      createPresentation({
+        data: {
+          prompt: form.content.trim(),
+          slideCount: form.slideCount,
+          style: form.style,
+          tone: form.tone,
+          layout: form.layout,
+        },
       }),
     onSuccess: (presentation) => {
       toast.success('Presentation created')
