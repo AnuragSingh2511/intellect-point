@@ -3,9 +3,22 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { prisma } from './db'
 
+function getBaseURL() {
+  if (process.env.BETTER_AUTH_URL) return process.env.BETTER_AUTH_URL
+  throw new Error('BETTER_AUTH_URL must be set')
+}
+
+function getTrustedOrigins(): string[] {
+  const origins = new Set<string>()
+  if (process.env.BETTER_AUTH_URL) origins.add(process.env.BETTER_AUTH_URL)
+  return Array.from(origins)
+}
+
 export const auth = betterAuth({
+  baseURL: getBaseURL(),
+  trustedOrigins: getTrustedOrigins(),
   database: prismaAdapter(prisma, {
-    provider: 'postgresql', // or "mysql", "postgresql", ...etc
+    provider: 'postgresql',
   }),
 
   socialProviders: {
