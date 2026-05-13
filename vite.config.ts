@@ -1,5 +1,5 @@
-import { defineConfig  } from 'vite'
-import type {Plugin} from 'vite';
+import { defineConfig } from 'vite'
+import type { Plugin } from 'vite'
 import { devtools } from '@tanstack/devtools-vite'
 
 import { tanstackStart } from '@tanstack/react-start/plugin/vite'
@@ -84,6 +84,9 @@ export { ReadableStream, TransformStream, WritableStream }
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
+  ssr: {
+    noExternal: prismaExternalPackages,
+  },
   plugins: [
     browserNodeBuiltinStubs(),
     devtools(),
