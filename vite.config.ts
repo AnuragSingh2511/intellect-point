@@ -89,27 +89,7 @@ const config = defineConfig({
     devtools(),
     tailwindcss(),
     tanstackStart(),
-    nitro({
-      rollupConfig: {
-        external: [
-          'react',
-          'react-dom',
-          'react-dom/server',
-          'react/jsx-runtime',
-          'react/jsx-dev-runtime',
-        ],
-      },
-      rolldownConfig: {
-        external: [
-          'react',
-          'react-dom',
-          'react-dom/server',
-          'react/jsx-runtime',
-          'react/jsx-dev-runtime',
-        ],
-      },
-      traceDeps: prismaExternalPackages,
-    }),
+    nitro(),
     viteReact(),
   ],
 })
