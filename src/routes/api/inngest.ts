@@ -1,4 +1,4 @@
-import { inngest } from '#/integrations/inngest/client'
+import { hasInngestCloudConfig, inngest } from '#/integrations/inngest/client'
 import {
   generatePresentation,
   helloWorld,
@@ -12,12 +12,27 @@ const handler = serve({
   functions: [helloWorld, generatePresentation],
 })
 
+const isCloudConfigured =
+  process.env.NODE_ENV !== 'production' || hasInngestCloudConfig()
+
+function missingConfigResponse() {
+  return Response.json({
+    ok: false,
+    configured: false,
+    message:
+      'Inngest cloud is not configured. Presentation generation falls back to inline execution.',
+  })
+}
+
 export const Route = createFileRoute('/api/inngest')({
   server: {
     handlers: {
-      GET: async ({ request }) => handler(request),
-      POST: async ({ request }) => handler(request),
-      PUT: async ({ request }) => handler(request),
+      GET: async ({ request }) =>
+        isCloudConfigured ? handler(request) : missingConfigResponse(),
+      POST: async ({ request }) =>
+        isCloudConfigured ? handler(request) : missingConfigResponse(),
+      PUT: async ({ request }) =>
+        isCloudConfigured ? handler(request) : missingConfigResponse(),
     },
   },
 })

@@ -1,0 +1,6 @@
+.env
+.env.*
+.output
+dist
+dist-ssr
+node_modules

@@ -3,13 +3,38 @@ import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { prisma } from './db'
 
-function getBaseURL() {
-  return process.env.BETTER_AUTH_URL
+const PRODUCTION_ORIGIN = 'https://intellect-point.anurag-singh.dev'
+
+function readEnv(name: string): string | undefined {
+  const value = process.env[name]?.trim()
+  return value ? value : undefined
+}
+
+function toOrigin(value: string | undefined): string | undefined {
+  if (!value) return undefined
+  try {
+    const withProtocol = value.startsWith('http') ? value : `https://${value}`
+    return new URL(withProtocol).origin
+  } catch {
+    return undefined
+  }
+}
+
+function getBaseURL(): string | undefined {
+  return (
+    toOrigin(readEnv('BETTER_AUTH_URL')) ??
+    toOrigin(readEnv('SERVER_URL')) ??
+    toOrigin(readEnv('VERCEL_PROJECT_PRODUCTION_URL')) ??
+    toOrigin(readEnv('VERCEL_URL')) ??
+    (readEnv('NODE_ENV') === 'production' ? PRODUCTION_ORIGIN : undefined)
+  )
 }
 
 function getTrustedOrigins(): string[] {
   const origins = new Set<string>()
-  if (process.env.BETTER_AUTH_URL) origins.add(process.env.BETTER_AUTH_URL)
+  const configuredBaseURL = getBaseURL()
+  if (configuredBaseURL) origins.add(configuredBaseURL)
+  origins.add(PRODUCTION_ORIGIN)
   return Array.from(origins)
 }
 

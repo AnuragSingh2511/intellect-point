@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 
 import { prisma } from '#/lib/db'
-import { inngest } from '#/integrations/inngest/client'
+import { hasInngestCloudConfig, inngest } from '#/integrations/inngest/client'
 
 import { deriveTitle, requirePresentationUserId } from '../lib/server-helpers'
 import {
@@ -9,6 +9,24 @@ import {
   presentationIdInputSchema,
   updatePresentationInputSchema,
 } from '../types/schemas'
+
+async function enqueuePresentationGeneration(presentationId: string) {
+  if (process.env.NODE_ENV === 'production' && !hasInngestCloudConfig()) {
+    return false
+  }
+
+  await inngest.send({
+    name: 'presentation/generate',
+    data: { presentationId },
+  })
+
+  return true
+}
+
+async function generateInline(presentationId: string) {
+  const { generatePresentationSlides } = await import('../lib/generation')
+  await generatePresentationSlides(presentationId)
+}
 
 export const createPresentation = createServerFn({
   method: 'POST',
@@ -30,12 +48,11 @@ export const createPresentation = createServerFn({
     })
 
     try {
-      await inngest.send({
-        name: 'presentation/generate',
-        data: { presentationId: presentation.id },
-      })
+      const queued = await enqueuePresentationGeneration(presentation.id)
+      if (!queued) await generateInline(presentation.id)
     } catch (e) {
-      console.error('Inngest send failed:', e)
+      console.error('Presentation generation failed:', e)
+      throw e
     }
 
     return presentation
@@ -89,12 +106,11 @@ export const regeneratePresentation = createServerFn({
     })
 
     try {
-      await inngest.send({
-        name: 'presentation/generate',
-        data: { presentationId: data.id },
-      })
+      const queued = await enqueuePresentationGeneration(data.id)
+      if (!queued) await generateInline(data.id)
     } catch (e) {
-      console.error('Inngest send failed:', e)
+      console.error('Presentation regeneration failed:', e)
+      throw e
     }
 
     return { ok: true as const }

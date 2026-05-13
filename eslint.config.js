@@ -16,9 +16,14 @@ export default [
   },
   {
     ignores: [
+      '.output/**',
+      '.vercel/**',
+      'dist/**',
+      'dist-ssr/**',
       'eslint.config.js',
       'prettier.config.js',
       'src/components/ui/**',
+      'src/generated/**',
       'src/lib/utils.ts',
       '**/*.css',
     ],
