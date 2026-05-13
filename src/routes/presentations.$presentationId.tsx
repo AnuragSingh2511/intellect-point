@@ -52,8 +52,6 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { SlideshowModal } from '#/features/presentation/components/slideshow-modal'
-import { exportToPptx } from '#/features/presentation/lib/export-pptx'
-import { exportToPdf } from '#/features/presentation/lib/export-pdf'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -126,6 +124,8 @@ function PresentationDetailPage() {
 
     setIsExporting(true)
     try {
+      const { exportToPptx } =
+        await import('#/features/presentation/lib/export-pptx')
       const filename = await exportToPptx({
         title: data.title,
         slides: slidesToExport,
@@ -146,6 +146,8 @@ function PresentationDetailPage() {
 
     setIsExporting(true)
     try {
+      const { exportToPdf } =
+        await import('#/features/presentation/lib/export-pdf')
       const filename = await exportToPdf({
         title: data.title,
         slides: slidesToExport,

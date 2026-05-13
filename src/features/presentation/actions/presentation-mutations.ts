@@ -15,12 +15,28 @@ async function enqueuePresentationGeneration(presentationId: string) {
     return false
   }
 
-  await inngest.send({
-    name: 'presentation/generate',
-    data: { presentationId },
-  })
+  try {
+    await inngest.send({
+      name: 'presentation/generate',
+      data: { presentationId },
+    })
+    return true
+  } catch (error) {
+    const isConnectionError =
+      error instanceof TypeError &&
+      (error.message === 'fetch failed' ||
+        (error.cause as NodeJS.ErrnoException | undefined)?.code ===
+          'ECONNREFUSED')
 
-  return true
+    if (isConnectionError) {
+      console.warn(
+        'Inngest unreachable, falling back to inline generation. Start the Inngest dev server (e.g. `npx inngest-cli@latest dev`) if you want queued processing.',
+      )
+      return false
+    }
+
+    throw error
+  }
 }
 
 async function generateInline(presentationId: string) {

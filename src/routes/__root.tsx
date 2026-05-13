@@ -79,7 +79,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <script />
         <HeadContent />
       </head>
-      <body className="font-sans antialiased bg-background text-foreground selection:bg-primary/20">
+      <body
+        className="font-sans antialiased bg-background text-foreground selection:bg-primary/20"
+        suppressHydrationWarning
+      >
         {children}
         <Toaster />
         <Scripts />
