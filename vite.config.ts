@@ -94,12 +94,23 @@ const config = defineConfig({
     tanstackStart(),
     nitro({
       rollupConfig: {
-        external: prismaExternalPackages,
+        external: [
+          'react',
+          'react-dom',
+          'react-dom/server',
+          'react/jsx-runtime',
+          'react/jsx-dev-runtime',
+        ],
       },
       rolldownConfig: {
-        external: prismaExternalPackages,
+        external: [
+          'react',
+          'react-dom',
+          'react-dom/server',
+          'react/jsx-runtime',
+          'react/jsx-dev-runtime',
+        ],
       },
-      traceDeps: prismaExternalPackages,
     }),
     viteReact(),
   ],
