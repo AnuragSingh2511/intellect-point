@@ -85,7 +85,7 @@ export { ReadableStream, TransformStream, WritableStream }
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
   ssr: {
-    noExternal: [...prismaExternalPackages, /@prisma\/.*/],
+    noExternal: true,
   },
   plugins: [
     browserNodeBuiltinStubs(),
