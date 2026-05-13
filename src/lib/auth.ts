@@ -4,8 +4,7 @@ import { tanstackStartCookies } from 'better-auth/tanstack-start'
 import { prisma } from './db'
 
 function getBaseURL() {
-  if (process.env.BETTER_AUTH_URL) return process.env.BETTER_AUTH_URL
-  throw new Error('BETTER_AUTH_URL must be set')
+  return process.env.BETTER_AUTH_URL
 }
 
 function getTrustedOrigins(): string[] {
