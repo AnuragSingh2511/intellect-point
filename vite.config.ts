@@ -84,9 +84,6 @@ export { ReadableStream, TransformStream, WritableStream }
 
 const config = defineConfig({
   resolve: { tsconfigPaths: true },
-  ssr: {
-    noExternal: true,
-  },
   plugins: [
     browserNodeBuiltinStubs(),
     devtools(),
@@ -111,6 +108,7 @@ const config = defineConfig({
           'react/jsx-dev-runtime',
         ],
       },
+      traceDeps: prismaExternalPackages,
     }),
     viteReact(),
   ],
