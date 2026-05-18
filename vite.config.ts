@@ -8,14 +8,6 @@ import { nitro } from 'nitro/vite'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-const prismaExternalPackages = [
-  '@prisma/client',
-  '@prisma/adapter-pg',
-  '@prisma/adapter-libsql',
-  '@libsql/client',
-  'pg',
-]
-
 const asyncHooksStubId = '\0node-async-hooks-browser-stub'
 const streamStubId = '\0node-stream-browser-stub'
 const streamWebStubId = '\0node-stream-web-browser-stub'

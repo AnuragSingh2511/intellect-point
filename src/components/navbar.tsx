@@ -1,5 +1,4 @@
 import { authClient } from '#/lib/auth-client'
-import { cn } from '#/lib/utils'
 import { Link, useRouter } from '@tanstack/react-router'
 import { LogOut, Moon, Presentation, Sun, User } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -90,7 +89,7 @@ export default function Navbar() {
                   >
                     <Avatar className="size-9 border-2 border-primary/30">
                       <AvatarImage
-                        src={session.user.image}
+                        src={session.user.image ?? undefined}
                         alt={session.user.name}
                       />
                       <AvatarFallback className="bg-primary/10 text-primary font-medium">

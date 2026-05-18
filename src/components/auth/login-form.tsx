@@ -1,14 +1,12 @@
 import { Button } from '#/components/ui/button'
 import { Separator } from '#/components/ui/separator'
 import { authClient } from '#/lib/auth-client'
-import { useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 import { toInternalPath } from '#/lib/auth-redirect'
 
 export default function LoginForm({ redirectTo }: { redirectTo?: string }) {
-  const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState<'github' | 'google' | null>(
     null,
   )
@@ -16,19 +14,11 @@ export default function LoginForm({ redirectTo }: { redirectTo?: string }) {
   const handleSocialLogin = async (provider: 'github' | 'google') => {
     try {
       setIsSubmitting(provider)
+      const internalRedirect = toInternalPath(redirectTo)
       await authClient.signIn.social({
         provider,
-        fetchOptions: {
-          onSuccess: () => {
-            toast.success('Logged in successfully!')
-            const internalRedirect = toInternalPath(redirectTo)
-            navigate({ to: (internalRedirect ?? '/') as any })
-          },
-          onError: ({ error }) => {
-            toast.error(error.message || 'Failed to login. Please try again.')
-            setIsSubmitting(null)
-          },
-        },
+        callbackURL: internalRedirect ?? '/',
+        errorCallbackURL: '/login',
       })
     } catch {
       toast.error('Failed to login. Please try again.')

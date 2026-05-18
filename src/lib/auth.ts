@@ -35,6 +35,9 @@ function getTrustedOrigins(): string[] {
   const configuredBaseURL = getBaseURL()
   if (configuredBaseURL) origins.add(configuredBaseURL)
   origins.add(PRODUCTION_ORIGIN)
+  if (readEnv('NODE_ENV') !== 'production') {
+    origins.add('http://localhost:3000')
+  }
   return Array.from(origins)
 }
 

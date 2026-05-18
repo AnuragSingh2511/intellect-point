@@ -1,4 +1,5 @@
 import { generatePresentationSlides } from '#/features/presentation/lib/generation'
+import type { StepRunner } from '#/features/presentation/lib/generation'
 
 import { inngest } from './client'
 
@@ -10,8 +11,9 @@ export const generatePresentation = inngest.createFunction(
   },
   async ({ event, step }) => {
     const { presentationId } = event.data as { presentationId: string }
-    return generatePresentationSlides(presentationId, (name, fn) =>
-      step.run(name, fn),
+    return generatePresentationSlides(
+      presentationId,
+      step.run as unknown as StepRunner,
     )
   },
 )

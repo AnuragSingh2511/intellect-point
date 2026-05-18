@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 import { prisma } from '#/lib/db'
 
-type StepRunner = <T>(name: string, fn: () => Promise<T>) => Promise<T>
+export type StepRunner = <T>(name: string, fn: () => Promise<T>) => Promise<T>
 
 const slideSchema = z.object({
   title: z.string().describe('Slide title'),

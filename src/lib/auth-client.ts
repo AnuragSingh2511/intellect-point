@@ -1,5 +1,4 @@
 import { createAuthClient } from 'better-auth/react'
-import { tanstackStartCookies } from 'better-auth/tanstack-start'
 
 const PRODUCTION_ORIGIN = 'https://intellect-point.anurag-singh.dev'
 
@@ -20,7 +19,9 @@ function toOrigin(value: string | undefined): string | undefined {
 }
 
 function getServerAuthBaseURL(): string | undefined {
-  if (typeof window !== 'undefined') return undefined
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
 
   return (
     toOrigin(readEnv('BETTER_AUTH_URL')) ??
@@ -33,5 +34,4 @@ function getServerAuthBaseURL(): string | undefined {
 
 export const authClient = createAuthClient({
   baseURL: getServerAuthBaseURL(),
-  plugins: [tanstackStartCookies()],
 })
