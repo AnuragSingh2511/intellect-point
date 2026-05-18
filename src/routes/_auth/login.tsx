@@ -6,12 +6,13 @@ import { z } from 'zod'
 export const Route = createFileRoute('/_auth/login')({
   validateSearch: z.object({
     redirect: z.string().optional(),
+    error: z.string().optional(),
   }),
   component: LoginPage,
 })
 
 function LoginPage() {
-  const { redirect } = Route.useSearch()
+  const { redirect, error } = Route.useSearch()
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -35,7 +36,7 @@ function LoginPage() {
           </div>
 
           {/* Login form */}
-          <LoginForm redirectTo={redirect} />
+          <LoginForm redirectTo={redirect} error={error} />
         </div>
       </div>
     </div>

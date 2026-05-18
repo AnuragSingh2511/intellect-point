@@ -28,9 +28,9 @@
   --ring: oklch(0.72 0.14 45);
   --radius: 0.75rem;
 
-  /* Glass effect vars */
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.2);
+  /* Glass effect vars - opaque */
+  --glass-bg: oklch(0.985 0.002 247);
+  --glass-border: oklch(0.9 0.003 247);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
@@ -56,9 +56,9 @@
   --input: oklch(0.26 0.012 250);
   --ring: oklch(0.78 0.12 45);
 
-  /* Glass effect vars - dark */
-  --glass-bg: rgba(30, 30, 35, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  /* Glass effect vars - dark opaque */
+  --glass-bg: oklch(0.17 0.012 250);
+  --glass-border: oklch(0.26 0.012 250);
   --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
@@ -104,11 +104,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Glass morphism utility */
+/* Glass morphism utility - opaque */
 .glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
@@ -130,7 +128,7 @@ body {
 /* Custom scrollbar styling */
 .scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+  scrollbar-color: var(--border) var(--background);
 }
 
 .scrollbar-thin::-webkit-scrollbar {
@@ -139,7 +137,7 @@ body {
 }
 
 .scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--background);
   border-radius: 3px;
 }
 
@@ -171,7 +169,7 @@ body {
 .swiper-pagination-bullet {
   width: 8px;
   height: 8px;
-  background: rgba(255, 255, 255, 0.4);
+  background: oklch(0.85 0 0);
   opacity: 1;
   transition: all 0.3s ease;
 }

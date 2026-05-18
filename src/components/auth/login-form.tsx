@@ -1,15 +1,28 @@
 import { Button } from '#/components/ui/button'
 import { Separator } from '#/components/ui/separator'
 import { authClient } from '#/lib/auth-client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { toInternalPath } from '#/lib/auth-redirect'
 
-export default function LoginForm({ redirectTo }: { redirectTo?: string }) {
+export default function LoginForm({
+  redirectTo,
+  error,
+}: {
+  redirectTo?: string
+  error?: string
+}) {
   const [isSubmitting, setIsSubmitting] = useState<'github' | 'google' | null>(
     null,
   )
+
+  useEffect(() => {
+    if (error) {
+      setIsSubmitting(null)
+      toast.error('Authentication failed. Please try again.')
+    }
+  }, [error])
 
   const handleSocialLogin = async (provider: 'github' | 'google') => {
     try {
