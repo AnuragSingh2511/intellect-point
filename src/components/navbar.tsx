@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
+import { BYOK } from './byok'
 
 type Theme = 'light' | 'dark'
 
@@ -63,6 +64,8 @@ export default function Navbar() {
 
           {/* Right side */}
           <div className="flex items-center gap-2">
+            {session?.user && <BYOK />}
+
             {/* Theme toggle */}
             <Button
               variant="ghost"

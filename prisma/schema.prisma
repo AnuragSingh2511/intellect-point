@@ -14,16 +14,18 @@ model Todo {
 }
 
 model User {
-  id             String         @id
-  name           String
-  email          String
-  emailVerified  Boolean        @default(false)
-  image          String?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  sessions       Session[]
-  accounts       Account[]
-  presentations  Presentation[]
+  id                String         @id
+  name              String
+  email             String
+  emailVerified     Boolean        @default(false)
+  image             String?
+  encryptedGeminiKey String?
+  geminiKeyUpdatedAt DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  sessions          Session[]
+  accounts          Account[]
+  presentations     Presentation[]
 
   @@unique([email])
   @@map("user")

@@ -1,8 +1,9 @@
 import { Output, generateText } from 'ai'
-import { google } from '@ai-sdk/google'
+import { createGoogleGenerativeAI } from '@ai-sdk/google'
 import { z } from 'zod'
 
 import { prisma } from '#/lib/db'
+import { decryptApiKey } from '#/lib/encryption'
 
 export type StepRunner = <T>(name: string, fn: () => Promise<T>) => Promise<T>
 
@@ -112,6 +113,21 @@ export async function generatePresentationSlides(
       if (!p) throw new Error('Presentation not found')
       return p
     })
+
+    const apiKey = await runStep('resolve-api-key', async () => {
+      const user = await prisma.user.findUnique({
+        where: { id: presentation.userId },
+        select: { encryptedGeminiKey: true },
+      })
+      if (!user?.encryptedGeminiKey) {
+        throw new Error(
+          'No Gemini API key configured. Please add your API key in settings.',
+        )
+      }
+      return decryptApiKey(user.encryptedGeminiKey)
+    })
+
+    const google = createGoogleGenerativeAI({ apiKey })
 
     await runStep('mark-generating', async () => {
       await prisma.presentation.update({

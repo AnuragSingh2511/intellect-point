@@ -25,6 +25,8 @@ import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { Sparkles, Wand2 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { useApiKey } from '#/hooks/use-api-key'
+import { openByokDialog } from '#/hooks/use-byok-dialog'
 
 type HomeFormState = {
   content: string
@@ -53,6 +55,7 @@ export const Route = createFileRoute('/')({
 function HomePage() {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
+  const { data: apiKeyData } = useApiKey()
   const [form, setForm] = useState<HomeFormState>({
     content: '',
     slideCount: 8,
@@ -92,6 +95,14 @@ function HomePage() {
   const handleGenerate = () => {
     if (!form.content.trim()) {
       toast.error('Please enter your content first')
+      return
+    }
+    if (!apiKeyData?.exists) {
+      toast.error('API key required', {
+        description:
+          'Please configure your Gemini API key to generate presentations.',
+      })
+      openByokDialog()
       return
     }
     createMut.mutate()
